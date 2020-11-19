@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1 class="text-white bg-dark">Gyrotest</h1>
+    <div class="container">
+    <div class="form-group">
+      <label for="permission">IOS13 device? We need permission to access sensor data!</label>
+      <button class="btn btn-warning" id="permission" aria-describedby="permission" onclick="requestPermission()">Request permission</button>
+    </div>
+    <div class="form-group">
+      <label for="browser">Device</label>
+      <input type="text" class="form-control" id="browser" aria-describedby="browser" placeholder="0" disabled>
+    </div>
+    <div class="form-group">
+      <label for="pitch">Pitch</label>
+      <input type="text" class="form-control" id="pitch" aria-describedby="pitch" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label for="roll">Roll</label>
+      <input type="text" class="form-control" id="roll" aria-describedby="roll" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="description" rows="3"></textarea>
+    </div>
+    <div class="container container-fluid">
+      <div class="row">
+            <button id="btnOrientation" type="button" class="btn btn-secondary" onclick="showPanel('orientationPanel')">Orientation</button>
+            <button id="btnMotion" type="button" class="btn btn-secondary" onclick="showPanel('motionPanel')">Motion</button>
+            <button id="btnLog" type="button" class="btn btn-secondary" onclick="showPanel('logPanel')">Log</button>
+            <!-- <button id="btnSend" type="button" class="btn btn-warning" onclick="sendData()">Send data!</button> -->
+      </div>
+
+      <div class="row">
+        <div class="container" id="orientationPanel">
+          <form>
+            <div class="form-group">
+              <label for="absolute">Absolute</label>
+              <input type="text" class="form-control" id="absolute" aria-describedby="absolute" placeholder="0" disabled>
+              <small id="absoluteHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+              <label for="alpha">Alpha</label>
+              <input type="text" class="form-control" id="alpha" aria-describedby="alpha" placeholder="0" disabled>
+              <small id="alphaHelp" class="form-text text-muted">Motion of the device around the z axis (0 - 360º)</small>
+            </div>
+            <div class="form-group">
+              <label for="beta">Beta</label>
+              <input type="text" class="form-control" id="beta" aria-describedby="beta" placeholder="0" disabled>
+              <small id="betaHelp" class="form-text text-muted">Motion of the device around the x axis (-180 - 180º)</small>
+            </div>
+            <div class="form-group">
+              <label for="gamma">Gamma</label>
+              <input type="text" class="form-control" id="gamma" aria-describedby="gamma" placeholder="0" disabled>
+              <small id="gammaHelp" class="form-text text-muted">Motion of the device around the y axis (-90 - 90º)</small>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="container" id="motionPanel">
+          <form>
+            <div class="form-group">
+              <label for="accelerationX">Acceleration</label>
+              <br/>
+              X: <input type="text" class="form-control" id="accelearationX" aria-describedby="accelearationX" placeholder="0" disabled>
+              Y: <input type="text" class="form-control" id="accelearationY" aria-describedby="accelearationY" placeholder="0" disabled>
+              Z: <input type="text" class="form-control" id="accelearationZ" aria-describedby="accelearationZ" placeholder="0" disabled>
+              <small id="accelerationHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+              <label for="accelearationGravX">Acceleration including gravity</label>
+              <br/>
+              X: <input type="text" class="form-control" id="accelearationGravX" aria-describedby="accelearationGravX" placeholder="0" disabled>
+              Y: <input type="text" class="form-control" id="accelearationGravY" aria-describedby="accelearationGravY" placeholder="0" disabled>
+              Z: <input type="text" class="form-control" id="accelearationGravZ" aria-describedby="accelearationGravZ" placeholder="0" disabled>
+              <small id="accelerationHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+              <label for="rotationAlpha">Rotation rate</label>
+              <br/>
+              Alpha: <input type="text" class="form-control" id="rotationAlpha" aria-describedby="rotationAlpha" placeholder="0" disabled>
+              Beta: <input type="text" class="form-control" id="rotationBeta" aria-describedby="rotationBeta" placeholder="0" disabled>
+              Gamma: <input type="text" class="form-control" id="rotationGamma" aria-describedby="rotationGamma" placeholder="0" disabled>
+              <small id="betaHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+              <label for="interval">Interval</label>
+             <input type="text" class="form-control" id="interval" aria-describedby="interval" placeholder="0" disabled>
+              <small id="intervalHelp" class="form-text text-muted">Time, in milliseconds, at which data are obtain from the device.</small>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="container" id="logPanel">
+          <form>
+            <div class="form-group">
+              <label for="description">Log</label>
+              <textarea class="form-control" id="log" rows="10"></textarea>
+             </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+    <script>
+// HTML elements
+var orientationP = document.getElementById('orientationPanel'),
+    motionP      = document.getElementById('motionPanel'),
+    logP         = document.getElementById('logPanel'),
+    orientationB = document.getElementById('btnOrientation'),
+    motionB      = document.getElementById('btnMotion'),
+    logB         = document.getElementById('btnLog'),
+    browserT     = document.getElementById("browser"),
+    pitchT       = document.getElementById("pitch"),
+    rollT        = document.getElementById("roll"),
+    descriptionT = document.getElementById("description"),
+    absoluteT    = document.getElementById("absolute"),
+    alphaT       = document.getElementById("alpha"),
+    betaT        = document.getElementById("beta"),
+    gammaT       = document.getElementById("gamma"),
+    accelXT      = document.getElementById("accelearationX"),
+    accelYT      = document.getElementById("accelearationY"),
+    accelZT      = document.getElementById("accelearationZ"),
+    accelGXT     = document.getElementById("accelearationGravX"),
+    accelGYT     = document.getElementById("accelearationGravY"),
+    accelGZT     = document.getElementById("accelearationGravZ"),
+    rotAlphaT    = document.getElementById("rotationAlpha"),
+    rotBetaT     = document.getElementById("rotationBeta"),
+    rotGammaT    = document.getElementById("rotationGamma"),
+    intervalT    = document.getElementById("interval"),
+    logT    = document.getElementById("log");
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyAfbGDSaHbcyFit5ewEXbFlf8WwMC4Q1Ow",
+    authDomain: "mygyrotest.firebaseapp.com",
+    databaseURL: "https://mygyrotest.firebaseio.com",
+    projectId: "mygyrotest",
+    storageBucket: "mygyrotest.appspot.com",
+    messagingSenderId: "127170872910"
+  };
+firebase.initializeApp(config);
+
+function requestPermission() {
+  if (DeviceOrientationEvent && typeof(DeviceOrientationEvent.requestPermission) === "function") {
+    DeviceOrientationEvent.requestPermission().then(function(result) {
+      if (result == 'granted') {
+        window.addEventListener("deviceorientation", handleOrientation, true);
+      } else {
+        alert('DeviceOrientationEvent denied');
+      }
+    });
+    DeviceMotionEvent.requestPermission().then(function(result) {
+      if (result == 'granted') {
+        window.addEventListener("devicemotion", handleMotion, true);
+      } else {
+        alert('DeviceMotionEvent denied');
+      }
+    });
+  } else {
+    alert('No extra permissions needed!');
+  }
+}
+
+function addLog(text) {
+    var lines = logT.value.split(/\r*\n/);
+
+    if (lines.length < 20) {
+      logT.value += text + "\r\n";
+    } else {
+      lines.shift();
+      lines.push(text);
+      logT.value = lines.join("\r\n");
+    }
+}
+
+function showPanel(panel) {
+  switch(panel) {
+    case 'orientationPanel':
+      orientationP.style.display = 'block';
+      motionP.style.display = 'none';
+      logP.style.display = 'none';
+      orientationB.classList.replace("btn-secondary", "btn-primary");
+      motionB.classList.replace("btn-primary", "btn-secondary");
+      logB.classList.replace("btn-primary", "btn-secondary");
+      break;
+    case 'motionPanel':
+      orientationP.style.display = 'none';
+      motionP.style.display = 'block';
+      logP.style.display = 'none';
+      orientationB.classList.replace("btn-primary", "btn-secondary");
+      motionB.classList.replace("btn-secondary", "btn-primary");
+      logB.classList.replace("btn-primary", "btn-secondary");
+      break;
+    case 'logPanel':
+      orientationP.style.display = 'none';
+      motionP.style.display = 'none';
+      logP.style.display = 'block';
+      orientationB.classList.replace("btn-primary", "btn-secondary");
+      motionB.classList.replace("btn-primary", "btn-secondary");
+      logB.classList.replace("btn-secondary", "btn-primary");
+      break;
+  }
+}
+
+function handleOrientation(event) {
+  var absolute = event.absolute;
+  var alpha    = event.alpha;
+  var beta     = event.beta;
+  var gamma    = event.gamma;
+
+  absoluteT.value = absolute;
+  alphaT.value = alpha;
+  betaT.value = beta;
+  gammaT.value = gamma;
+
+  addLog('orientation event at ' + Date.now() + '; absolute:' + absolute + '; alpha:' + alpha + '; beta:' + beta + '; gamma:' + gamma);
+}
+
+function handleMotion(event) {
+  var acceleration                 = event.acceleration; // .x, .y, .z
+  var accelerationIncludingGravity = event.accelerationIncludingGravity; // .x, .y, .z
+  var rotationRate                 = event.rotationRate; // .alpha, .beta, .gamma
+  var interval                     = event.interval;
+
+  accelXT.value = acceleration.x;
+  accelYT.value = acceleration.y;
+  accelZT.value = acceleration.z;
+  accelGXT.value = accelerationIncludingGravity.x;
+  accelGYT.value = accelerationIncludingGravity.y;
+  accelGZT.value = accelerationIncludingGravity.z;
+  rotAlphaT.value = rotationRate.alpha;
+  rotBetaT.value = rotationRate.beta;
+  rotGammaT.value = rotationRate.gamma;
+  intervalT.value = interval;
+
+  addLog('motion event at ' + Date.now() + '; accelerationX:' + acceleration.x + '; accelerationY:' + acceleration.y + '; accelerationZ:' + acceleration.z + '; accelerationGravityX:' + accelerationIncludingGravity.x + '; accelerationGravityY:' + accelerationIncludingGravity.y + '; accelerationGravityZ:' + accelerationIncludingGravity.z + '; rotationAlpha:' + rotationRate.alpha + '; rotationBeta:' + rotationRate.beta + '; rotationGamma:' + rotationRate.gamma + '; interval:' + interval);
+}
+
+function sendData() {
+  var database = firebase.database();
+  var data = {
+    device: window.navigator.userAgent,
+    pitch: pitchT.value,
+    roll: rollT.value,
+    description: descriptionT.value,
+    orientation: {
+      absolute: absoluteT.value,
+      alpha: alphaT.value,
+      beta: betaT.value,
+      gamma: gammaT.value
+    },
+    motion: {
+      acceleration: {
+        x: accelXT.value,
+        y: accelYT.value,
+        z: accelZT.value
+      },
+      accelearationGravity: {
+        x: accelGXT.value,
+        y: accelGYT.value,
+        z: accelGZT.value
+      },
+      rotation: {
+        alpha: rotAlphaT.value,
+       beta: rotBetaT.value,
+        gamma: rotGammaT.value
+      },
+      interval: intervalT.value
+    },
+    log: logT.value
+  };
+
+  console.log(data);
+
+  database.ref('html/tests/').push(data, function (error) {
+    if (!error) {
+      alert('Data sent!\r\n');
+    } else {
+      alert(error);
+    }
+  });
+
+}
+
+// main
+window.addEventListener("deviceorientation", handleOrientation, true);
+window.addEventListener("devicemotion", handleMotion, true);
+
+browser.value = window.navigator.userAgent;
+
+showPanel('orientationPanel');
+
+    </script>
+  </body>
+</html>
